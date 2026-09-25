@@ -11,4 +11,7 @@ urlpatterns = [
 
     # URLs de nuestra aplicación usuarios
     path('', include('usuarios.urls')),
+
+    # URLs de nuestra aplicación personal
+    path('personal/', include('personal.urls')),
 ]

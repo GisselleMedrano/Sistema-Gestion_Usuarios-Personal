@@ -58,7 +58,7 @@
         .data-value {
             color: #f8fafc;
             font-weight: 500;
-            word-break: break-all; /* Evita que correos largos se desborden */
+            word-break: break-all;
         }
 
         .btn-glow-primary {
@@ -111,7 +111,7 @@
                         </div>
                         
                         <div>
-                            {% if request.user.is_superuser %}
+                            {% if request.user.is_superuser or request.user.is_staff %}
                                 <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 px-3 py-2 rounded-pill">
                                     <i class="bi bi-shield-lock-fill me-1"></i> Administrador
                                 </span>
@@ -146,7 +146,7 @@
                         <div class="col-md-6">
                             <div class="data-box">
                                 <span class="data-label d-block"><i class="bi bi-card-text me-1"></i> Nombre</span>
-                                <span class="data-value fs-6">{{ request.user.first_name|default:"-- " }}</span>
+                                <span class="data-value fs-6">{{ request.user.first_name|default:"--" }}</span>
                             </div>
                         </div>
 
@@ -169,7 +169,15 @@
 
                     <!-- Botones de Acción -->
                     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
-                        <div class="d-flex gap-2">
+                        <div class="d-flex flex-wrap gap-2">
+                            
+                            <!-- Botón de Gestión de Personal VISIBLE SOLO PARA ADMINS/STAFF -->
+                            {% if request.user.is_staff or request.user.is_superuser %}
+                                <a href="{% url 'index_personal' %}" class="btn btn-glow-primary btn-sm px-3">
+                                    <i class="bi bi-people-fill me-1"></i> Gestión de Personal
+                                </a>
+                            {% endif %}
+
                             <a href="{% url 'editar_perfil' %}" class="btn btn-glow-outline btn-sm px-3">
                                 <i class="bi bi-pencil-square me-1"></i> Editar perfil
                             </a>
@@ -180,7 +188,7 @@
 
                         <form method="POST" action="{% url 'logout' %}" class="m-0">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-glow-primary btn-sm px-4">
+                            <button type="submit" class="btn btn-glow-outline btn-sm px-4">
                                 <i class="bi bi-box-arrow-right me-1"></i> Cerrar sesión
                             </button>
                         </form>
